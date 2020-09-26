@@ -135,6 +135,13 @@ def vote(request, question_id):
 
 ````
 
+#### Templates
+
+33. Create the "polls/templates" and "polls/templates/polls" directories.
+34. Create "index.html".
+
+...
+
 
 #### Install and Configure Django Debug Toolbar
 `pip install django-debug-toolbar`
