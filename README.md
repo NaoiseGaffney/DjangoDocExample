@@ -1,41 +1,83 @@
-<img src="https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png" style="margin: 0;">
+# Django Documentation Getting Started Tutorial
 
-Welcome USER_NAME,
+(Django Documentation Getting Started Tutorial)[https://docs.djangoproject.com/en/3.1/intro/]
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. You can safely delete this README.md file, or change it for your own project.
+## Initial Configuration
 
-## Gitpod Reminders
+### GitHub
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+1. Create GitHub Repository using the CI Full Template.
+2. Create a development branch (master + development).
 
-`python3 -m http.server`
+### Visual Studio Code
 
-A blue button should appear to click: *Make Public*,
+#### Configure Visual Studio Code environment
 
-Another blue button should appear to click: *Open Browser*.
+3. New Window.
+4. Clone Repository -> GitHub -> (DjangoDocExample)[https://github.com/NaoiseGaffney/DjangoDocExample].
+5. Select development branch.
+6. Create a virtual Python environment - Terminal: `python3 -m venv .venv`
+7. Activate virtual Python environment - Terminal: `source .venv/bin/activate`
+8. Install Django 3.1 - Terminal: `pip install Django`
+9. Upgrade pip - Terminal: `pip install pip --upgrade`
+10. Check Django version - Terminal: `python -m django --version`
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+#### Create the Initial Django Project
 
-A blue button should appear to click: *Make Public*,
+11. Create a Django **Project** called "mysite" - Terminal: `django-admin startproject mysite`
+12. Verify that the initial Django project works - Terminal: `cd mysite`, `python manage.py runserver`, `http://127.0.0.1:8000/`
 
-Another blue button should appear to click: *Open Browser*.
+#### Create the Poll's Application
 
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the backend lessons.
+13. Create a Django **Application** called "polls" - Terminal: `python manage.py startapp polls`
+14. Add the first **View** in "polls/views.py.
+15. Create the first **URL** in "polls/urls.py" (create the file).
+16. Point the root URLconf at the "polls/urls.py".
+17. Verify that the new URL's work -  Terminal: `python manage.py runserver`, `http://127.0.0.1:8000/polls/`
 
-## Updates Since The Instructional Video
+#### Database Setup
 
-We continually tweak and adjust this template to help give you the best experience. Here are the updates since the original video was made:
+18. Update "mysite/mysite/settings.py" to use the correct database binding, default is "sqlite3".
+19. Update `TIME_ZONE = 'GMT'`.
+20. Create the **Database** tables for the `INSTALLED_APPS` in "settings.py" - Terminal: `python manage.py migrate`
 
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed along with other common files.
+#### Creating Models
 
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
+21. Update "polls/models.py" with the models (Question and Choice).
 
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
+#### Activating Models (Change the Models in "models.py", run `python manage.py makemigrations` to create migrations for those changes, and `python manage.py migrate` to apply those changes to the database.)
 
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
+22. Add `polls.apps.PollsConfig` to "mysite/mysite/settings.py".
+23. Store the Models as migrations - Terminal: `python manage.py makemigrations polls`
+24. (Optional) View, to verify, the SQL statements that are used by `migrate` to create the database tables - Terminal: `python manage.py sqlmigrate polls 0001`
+25. Create the **Database** tables for the new Models - Terminal: `python manage.py migrate`
 
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
+#### Playing with the API
 
---------
+26. `python manage.py shell`, shell ensures that manage.py sets the `DJANGO_SETTINGS_MODULE` environment variable.
+27. Add...
 
-Happy coding!
+```
+
+import datetime
+from django.utils import timezone
+...
+    def __str__(self):
+        return self.question_text
+...
+    def __str__(self):
+            return self.choice_text
+...
+    def was_published_recently(self):
+            return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+
+```
+
+#### Django Admin
+
+28. Create an admin user - Terminal: `python manage.py createsuperuser`
+29. Verify that the Admin URL works -  Terminal: `python manage.py runserver`, `http://127.0.0.1:8000/admin/`
+30. Make the poll application modifiable in Django Admin in "polls/admin.py".
+
+#### Install and Configure Django Debug Toolbar
+`pip install django-debug-toolbar`
